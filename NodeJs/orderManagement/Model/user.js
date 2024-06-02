@@ -38,7 +38,6 @@ const User = sequelize.define('User',{
     }
 });
 
-sequelize.sync().then(()=>{console.log('Database Connected -User Table')}).catch((err)=>{console.log('Database sync Error',err)});
 
 module.exports = { User};
 

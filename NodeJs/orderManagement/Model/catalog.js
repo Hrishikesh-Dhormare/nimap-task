@@ -1,10 +1,5 @@
-const {Sequelize, DataTypes} = require('sequelize');
-require('dotenv').config();
-const sequelize = new Sequelize("wjp", "dbt", "dbt", {
-    dialect : 'mysql',
-    host : process.env.HOST
-});
-
+const {DataTypes} = require('sequelize');
+const {sequelize} = require('./config')
 
 const Catalog = sequelize.define('Catalog',{
     bookId : {
@@ -29,6 +24,6 @@ const Catalog = sequelize.define('Catalog',{
     }
 });
 
-sequelize.sync().then(()=>{console.log('Database Connected -Catalog Table')}).catch((err)=>{console.log('Database sync Error',err)});
+// sequelize.sync().then(()=>{console.log('Database Connected -Catalog Table')}).catch((err)=>{console.log('Database sync Error',err)});
 
 module.exports = { Catalog};

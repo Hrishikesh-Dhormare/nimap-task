@@ -1,27 +1,20 @@
 const {Sequelize, DataTypes} = require('sequelize');
-const { seq }= require('./config');
+const { seq, sequelize }= require('./config');
 const {User} = require('./user');
 const {Catalog}= require('./catalog');
+const {OrderItems} = require('./orderItem');
 
-const Order = seq.define('Order', {
+const Order = sequelize.define('Order', {
     orderId : {
         type : DataTypes.INTEGER,
         primaryKey : true,
         autoIncrement : true
     },
     userId : {
-        type : DataTypes.INTEGER,
-        references: {         // Order belong to One User 1:1
-            model: 'Users',
-            key: 'UserId'
-          }
+        type : DataTypes.INTEGER, // Order belong to One User 1:1
     },
     bookId : {
-        type : DataTypes.INTEGER,
-        references: {         // Order hasMany Books 1:n
-            model: 'Catalog',
-            key: 'bookId'
-        }
+        type : DataTypes.INTEGER, // Order hasMany Books 1:n
     },
     quantity : {
         type : DataTypes.INTEGER
@@ -33,9 +26,8 @@ const Order = seq.define('Order', {
 });
 
 Order.belongsTo(User, { foreignKey :'userId', as : 'user'});
-Order.hasMany(Catalog, { as : 'catalog'});
+Order.belongsToMany(Catalog, { through : OrderItems, onDelete: "CASCADE"});
 
-// seq.sync({force : true}).then(()=>{console.log('Database Connected -Order Table')}).catch((err)=>{console.log('Database sync Error',err)});
 
 module.exports = { Order};
 
